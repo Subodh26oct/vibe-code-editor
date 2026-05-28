@@ -512,7 +512,9 @@ export const AIChatSidePanel: React.FC<AIChatSidePanelProps> = ({
                                                     remarkPlugins={[remarkGfm, remarkMath]}
                                                     rehypePlugins={[rehypeKatex]}
                                                     components={{
-                                                        code: ({ children, className, inline }) => {
+                                                        code: ({ children, className, ...props }) => {
+                                                            const match = /language-(\w+)/.exec(className || '');
+                                                            const inline = !match;
                                                             if (inline) {
                                                                 return (
                                                                     <code className="bg-zinc-800 px-1 py-0.5 rounded text-sm">

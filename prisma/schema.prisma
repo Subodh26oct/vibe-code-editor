@@ -20,12 +20,13 @@ enum UserRole {
 }
 
 model User {
-  id       String    @id @default(cuid()) @map("_id")
-  name     String?
-  email    String    @unique
-  image    String?
-  accounts Account[]
-  role     UserRole  @default(USER)
+  id            String    @id @default(cuid()) @map("_id")
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  role          UserRole  @default(USER)
 
   myPlaground Playground[]
   staredPlayground StarMark[]
@@ -41,13 +42,13 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refreshToken      String? @map("refresh_token")
-  accessToken       String? @map("access_token")
-  expiresAt         Int?    @map("expires_at")
-  tokenType         String? @map("token_type")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
   scope             String?
-  idToken           String? @map("id_token")
-  sessionState      String? @map("session_state")
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

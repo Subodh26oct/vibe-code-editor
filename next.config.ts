@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["@prisma/client", "prisma"],
   images:{
     remotePatterns:[
       {
@@ -30,9 +31,6 @@ const nextConfig: NextConfig = {
     ];
   },
   reactStrictMode:false,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 };
 
 export default nextConfig;
