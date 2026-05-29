@@ -31,6 +31,8 @@ const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
+const SIDEBAR_WIDTH_COOKIE_NAME = "sidebar_width"
+const SIDEBAR_WIDTH_DEFAULT = 256
 
 type SidebarContextProps = {
   state: "expanded" | "collapsed"
@@ -40,6 +42,12 @@ type SidebarContextProps = {
   setOpenMobile: (open: boolean) => void
   isMobile: boolean
   toggleSidebar: () => void
+  isDragging: boolean
+  setIsDragging: (dragging: boolean) => void
+  width: number
+  setWidth: (width: number) => void
+  side: "left" | "right"
+  setSide: (side: "left" | "right") => void
 }
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null)
@@ -68,6 +76,23 @@ function SidebarProvider({
 }) {
   const isMobile = useIsMobile()
   const [openMobile, setOpenMobile] = React.useState(false)
+  const [isDragging, setIsDragging] = React.useState(false)
+  const [width, setWidth] = React.useState(SIDEBAR_WIDTH_DEFAULT)
+  const [side, setSide] = React.useState<"left" | "right">("left")
+
+  // Restore saved width from cookie on mount
+  React.useEffect(() => {
+    const savedWidth = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith(`${SIDEBAR_WIDTH_COOKIE_NAME}=`))
+      ?.split("=")[1]
+    if (savedWidth) {
+      const parsed = parseInt(savedWidth, 10)
+      if (!isNaN(parsed) && parsed >= 160 && parsed <= 800) {
+        setWidth(parsed)
+      }
+    }
+  }, [])
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
@@ -122,8 +147,25 @@ function SidebarProvider({
       openMobile,
       setOpenMobile,
       toggleSidebar,
+      isDragging,
+      setIsDragging,
+      width,
+      setWidth,
+      side,
+      setSide,
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+    [
+      state,
+      open,
+      setOpen,
+      isMobile,
+      openMobile,
+      setOpenMobile,
+      toggleSidebar,
+      isDragging,
+      width,
+      side,
+    ]
   )
 
   return (
@@ -133,7 +175,7 @@ function SidebarProvider({
           data-slot="sidebar-wrapper"
           style={
             {
-              "--sidebar-width": SIDEBAR_WIDTH,
+              "--sidebar-width": `${width}px`,
               "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
               ...style,
             } as React.CSSProperties
@@ -163,7 +205,13 @@ function Sidebar({
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const { isMobile, state, openMobile, setOpenMobile, isDragging, setSide } = useSidebar()
+
+  React.useEffect(() => {
+    if (setSide) {
+      setSide(side)
+    }
+  }, [side, setSide])
 
   if (collapsible === "none") {
     return (
@@ -218,7 +266,8 @@ function Sidebar({
       <div
         data-slot="sidebar-gap"
         className={cn(
-          "relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear",
+          "relative w-(--sidebar-width) bg-transparent duration-200 ease-linear",
+          isDragging ? "transition-none" : "transition-[width]",
           "group-data-[collapsible=offcanvas]:w-0",
           "group-data-[side=right]:rotate-180",
           variant === "floating" || variant === "inset"
@@ -229,7 +278,8 @@ function Sidebar({
       <div
         data-slot="sidebar-container"
         className={cn(
-          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
+          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) duration-200 ease-linear md:flex",
+          isDragging ? "transition-none" : "transition-[left,right,width]",
           side === "left"
             ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
             : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
@@ -280,7 +330,71 @@ function SidebarTrigger({
 }
 
 function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, isDragging, setIsDragging, width, setWidth, side } = useSidebar()
+
+  const latestWidthRef = React.useRef(width)
+  React.useEffect(() => {
+    latestWidthRef.current = width
+  }, [width])
+
+  const handleMouseDown = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault()
+      
+      const startX = e.clientX
+      const startWidth = latestWidthRef.current
+      let moved = false
+      
+      setIsDragging(true)
+      
+      // Lock cursor globally and prevent text selection
+      document.body.style.cursor = "col-resize"
+      document.body.style.userSelect = "none"
+      
+      const handleMouseMove = (event: MouseEvent) => {
+        const currentX = event.clientX
+        const delta = currentX - startX
+        
+        // Calculate new width depending on side
+        const newWidth = side === "right" 
+          ? startWidth - delta 
+          : startWidth + delta
+          
+        // Constrain width between 160px and 800px
+        const constrainedWidth = Math.max(160, Math.min(800, newWidth))
+        
+        if (Math.abs(delta) > 3) {
+          moved = true
+        }
+        
+        setWidth(constrainedWidth)
+      }
+      
+      const handleMouseUp = () => {
+        setIsDragging(false)
+        
+        // Restore cursor and text selection
+        document.body.style.cursor = ""
+        document.body.style.userSelect = ""
+        
+        // Save the width to cookie
+        const finalWidth = latestWidthRef.current
+        document.cookie = `${SIDEBAR_WIDTH_COOKIE_NAME}=${finalWidth}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+        
+        window.removeEventListener("mousemove", handleMouseMove)
+        window.removeEventListener("mouseup", handleMouseUp)
+        
+        // If not moved much, treat as click to toggle
+        if (!moved) {
+          toggleSidebar()
+        }
+      }
+      
+      window.addEventListener("mousemove", handleMouseMove)
+      window.addEventListener("mouseup", handleMouseUp)
+    },
+    [side, setWidth, setIsDragging, toggleSidebar]
+  )
 
   return (
     <button
@@ -288,7 +402,7 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
       data-slot="sidebar-rail"
       aria-label="Toggle Sidebar"
       tabIndex={-1}
-      onClick={toggleSidebar}
+      onMouseDown={handleMouseDown}
       title="Toggle Sidebar"
       className={cn(
         "absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border sm:flex",

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { WebContainer } from "@webcontainer/api";
 import { TemplateFolder } from "@/modules/playground/lib/path-to-json";
 
@@ -15,6 +15,34 @@ interface UseWebContaierReturn {
   destory: () => void;
 }
 
+// Singleton: only one WebContainer instance is allowed per origin
+let globalInstance: WebContainer | null = null;
+let bootPromise: Promise<WebContainer> | null = null;
+
+async function getOrBootWebContainer(): Promise<WebContainer> {
+  // If we already have a live instance, reuse it
+  if (globalInstance) {
+    return globalInstance;
+  }
+
+  // If a boot is already in progress, wait for it
+  if (bootPromise) {
+    return bootPromise;
+  }
+
+  // Boot a new instance and cache the promise to prevent duplicate boots
+  bootPromise = WebContainer.boot().then((instance) => {
+    globalInstance = instance;
+    return instance;
+  }).catch((err) => {
+    // Reset so the next call can retry
+    bootPromise = null;
+    throw err;
+  });
+
+  return bootPromise;
+}
+
 export const useWebContainer = ({
   templateData,
 }: UseWebContainerProps): UseWebContaierReturn => {
@@ -28,7 +56,7 @@ export const useWebContainer = ({
 
     async function initializeWebContainer() {
       try {
-        const webcontainerInstance = await WebContainer.boot();
+        const webcontainerInstance = await getOrBootWebContainer();
 
         if (!mounted) return;
 
@@ -51,9 +79,7 @@ export const useWebContainer = ({
 
     return () => {
       mounted = false;
-      if (instance) {
-        instance.teardown();
-      }
+      // Don't teardown the singleton on unmount — it's reused across navigations
     };
   }, []);
 
@@ -85,6 +111,8 @@ export const useWebContainer = ({
   const destory = useCallback(()=>{
     if(instance){
         instance.teardown()
+        globalInstance = null;
+        bootPromise = null;
         setInstance(null);
         setServerUrl(null)
     }

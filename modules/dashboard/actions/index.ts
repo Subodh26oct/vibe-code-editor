@@ -95,6 +95,53 @@ export const createPlayground = async (data: {
   }
 };
 
+export const createPlaygroundFromRepo = async (data: {
+  title: string;
+  repoUrl: string;
+  templateData: {
+    folderName: string;
+    items: unknown[];
+  };
+}) => {
+  const user = await currentUser();
+
+  if (!user?.id) {
+    throw new Error("User must be logged in");
+  }
+
+  const { title, repoUrl, templateData } = data;
+
+  try {
+    const result = await db.$transaction(async (tx) => {
+      // Create the playground
+      const playground = await tx.playground.create({
+        data: {
+          title,
+          description: `Imported from ${repoUrl}`,
+          template: "REACT",
+          userId: user.id!,
+        },
+      });
+
+      // Create the template file with the repo tree
+      await tx.templateFile.create({
+        data: {
+          content: templateData as any,
+          playgroundId: playground.id,
+        },
+      });
+
+      return playground;
+    });
+
+    revalidatePath("/dashboard");
+    return result;
+  } catch (error) {
+    console.error("Error creating playground from repo:", error);
+    throw new Error("Failed to create playground from repository");
+  }
+};
+
 export const deleteProjectById = async (id: string) => {
   try {
     await db.playground.delete({

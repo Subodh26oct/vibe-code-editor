@@ -15,8 +15,10 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // Apply to all routes
-        source: '/:path*',
+        // Apply COOP/COEP to all routes EXCEPT auth API routes
+        // These headers are required for WebContainers (SharedArrayBuffer)
+        // but break OAuth redirect flows from Google/GitHub
+        source: '/:path((?!api/auth).*)',
         headers: [
           {
             key: 'Cross-Origin-Opener-Policy',

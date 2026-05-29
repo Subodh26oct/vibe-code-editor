@@ -20,6 +20,19 @@ interface WebContainerDirectory {
 
 type WebContainerFileSystem = Record<string, WebContainerFile | WebContainerDirectory>;
 
+function getItemKey(item: TemplateItem): string {
+  // It's a folder
+  if (item.folderName && item.items) {
+    return item.folderName;
+  }
+  // It's a file with an extension
+  if (item.fileExtension) {
+    return `${item.filename}.${item.fileExtension}`;
+  }
+  // It's a file without an extension (Dockerfile, Makefile, .gitignore, etc.)
+  return item.filename;
+}
+
 export function transformToWebContainerFormat(template: { folderName: string; items: TemplateItem[] }): WebContainerFileSystem {
   function processItem(item: TemplateItem): WebContainerFile | WebContainerDirectory {
     if (item.folderName && item.items) {
@@ -27,10 +40,10 @@ export function transformToWebContainerFormat(template: { folderName: string; it
       const directoryContents: WebContainerFileSystem = {};
       
       item.items.forEach(subItem => {
-        const key = subItem.fileExtension 
-          ? `${subItem.filename}.${subItem.fileExtension}`
-          : subItem.folderName!;
-        directoryContents[key] = processItem(subItem);
+        const key = getItemKey(subItem);
+        if (key) {
+          directoryContents[key] = processItem(subItem);
+        }
       });
 
       return {
@@ -40,7 +53,7 @@ export function transformToWebContainerFormat(template: { folderName: string; it
       // This is a file
       return {
         file: {
-          contents: item.content
+          contents: item.content || ""
         }
       };
     }
@@ -49,11 +62,11 @@ export function transformToWebContainerFormat(template: { folderName: string; it
   const result: WebContainerFileSystem = {};
   
   template.items.forEach(item => {
-    const key = item.fileExtension 
-      ? `${item.filename}.${item.fileExtension}`
-      : item.folderName!;
-    result[key] = processItem(item);
+    const key = getItemKey(item);
+    if (key) {
+      result[key] = processItem(item);
+    }
   });
 
   return result;
-}1
+}
