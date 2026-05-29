@@ -3,8 +3,6 @@
 import * as React from "react";
 import {
   ChevronRight,
-  File,
-  Folder,
   Plus,
   FilePlus,
   FolderPlus,
@@ -12,6 +10,7 @@ import {
   Trash2,
   Edit3,
 } from "lucide-react";
+import { getFileIcon, getFolderIcon } from "./file-icons";
 
 import {
   Collapsible,
@@ -290,7 +289,7 @@ function TemplateNode({
             onClick={() => onFileSelect?.(file)}
             className="flex-1"
           >
-            <File className="h-4 w-4 mr-2 shrink-0" />
+            {getFileIcon(file.fileExtension, file.filename)}
             <span>{fileName}</span>
           </SidebarMenuButton>
 
@@ -405,8 +404,8 @@ function TemplateNode({
           <div className="flex items-center group">
             <CollapsibleTrigger asChild>
               <SidebarMenuButton className="flex-1">
-                <ChevronRight className="transition-transform" />
-                <Folder className="h-4 w-4 mr-2 shrink-0" />
+                <ChevronRight className="transition-transform h-3.5 w-3.5 shrink-0 text-muted-foreground/60" />
+                {getFolderIcon(folderName, isOpen)}
                 <span>{folderName}</span>
               </SidebarMenuButton>
             </CollapsibleTrigger>
@@ -448,7 +447,7 @@ function TemplateNode({
           </div>
 
           <CollapsibleContent>
-            <SidebarMenuSub>
+            <SidebarMenuSub className="relative ml-3 pl-3 border-l border-sidebar-border/50">
               {folder.items.map((childItem, index) => (
                 <TemplateNode
                   key={index}

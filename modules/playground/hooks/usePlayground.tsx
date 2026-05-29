@@ -40,11 +40,23 @@ export const usePlayground = (id: string): UsePlaygroundReturn => {
       setPlaygroundData(data);
       const rawContent = data?.templateFiles?.[0]?.content;
 
-      if (typeof rawContent === "string") {
-        const parsedContent = JSON.parse(rawContent);
-        setTemplateData(parsedContent);
-        toast.success("playground loaded successfully");
-        return;
+      if (rawContent) {
+        // Handle both formats: string (from SaveUpdatedCode) and object (from createPlaygroundFromRepo)
+        let parsedContent: TemplateFolder;
+
+        if (typeof rawContent === "string") {
+          parsedContent = JSON.parse(rawContent);
+        } else if (typeof rawContent === "object" && rawContent !== null) {
+          parsedContent = rawContent as unknown as TemplateFolder;
+        } else {
+          parsedContent = null as any;
+        }
+
+        if (parsedContent && parsedContent.folderName) {
+          setTemplateData(parsedContent);
+          toast.success("playground loaded successfully");
+          return;
+        }
       }
 
       //   load template from api if not in saved content
