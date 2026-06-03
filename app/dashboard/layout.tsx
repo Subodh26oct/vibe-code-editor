@@ -19,6 +19,11 @@ export default async function DashboardLayout({
     VUE: "Compass",
     HONO: "FlameIcon",
     ANGULAR: "Terminal",
+    SVELTEKIT: "Flame",
+    ASTRO: "Rocket",
+    VITE_SHADCN: "Sparkles",
+    STATIC: "FileCode",
+    TYPESCRIPT: "Braces",
   }
 
   const formattedPlaygroundData = playgroundData?.map((item)=>({

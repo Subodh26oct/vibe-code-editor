@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="vite-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#41D1FF" />
+      <stop offset="100%" stop-color="#BD34FE" />
+    </linearGradient>
+  </defs>
+  <path fill="url(#vite-gradient)" d="M19.95 3H4.05L12 18.9 19.95 3z" />
+  <path fill="#FFD600" d="M11 11L14 4.5l-6 0L6 12h5l-2 7.5L18 9.5l-7 0z" />
+</svg>
