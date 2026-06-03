@@ -63,6 +63,11 @@ enum Templates {
   VUE
   HONO
   ANGULAR
+  SVELTEKIT
+  ASTRO
+  VITE_SHADCN
+  STATIC
+  TYPESCRIPT
 }
 model Playground {
   id  String @id @default(cuid()) @map("_id")

@@ -1,4 +1,4 @@
-import { UserRole } from "@prisma/client";
+import { UserRole, Template } from "@prisma/client";
 import NextAuth , {type DefaultSession} from "next-auth"
 
 

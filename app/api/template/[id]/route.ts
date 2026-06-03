@@ -115,6 +115,86 @@ const DEFAULT_TEMPLATES = {
       },
     ],
   },
+  SVELTEKIT: {
+    folderName: "SvelteKit App",
+    items: [
+      {
+        filename: "package",
+        fileExtension: "json",
+        content: `{\n  "name": "sveltekit-app",\n  "version": "1.0.0",\n  "type": "module",\n  "scripts": {\n    "dev": "vite dev",\n    "build": "vite build",\n    "preview": "vite preview"\n  },\n  "devDependencies": {\n    "@sveltejs/adapter-auto": "^3.0.0",\n    "@sveltejs/kit": "^2.0.0",\n    "@sveltejs/vite-plugin-svelte": "^3.0.0",\n    "svelte": "^4.0.0",\n    "vite": "^5.0.0"\n  }\n}`,
+      },
+      {
+        filename: "svelte.config",
+        fileExtension: "js",
+        content: `import adapter from '@sveltejs/adapter-auto';\n\n/** @type {import('@sveltejs/kit').Config} */\nconst config = {\n\tkit: {\n\t\tadapter: adapter()\n\t}\n};\n\nexport default config;`,
+      },
+    ],
+  },
+  ASTRO: {
+    folderName: "Astro App",
+    items: [
+      {
+        filename: "package",
+        fileExtension: "json",
+        content: `{\n  "name": "astro-app",\n  "version": "1.0.0",\n  "type": "module",\n  "scripts": {\n    "dev": "astro dev",\n    "start": "astro dev",\n    "build": "astro build",\n    "preview": "astro preview"\n  },\n  "dependencies": {\n    "astro": "^4.0.0"\n  }\n}`,
+      },
+    ],
+  },
+  VITE_SHADCN: {
+    folderName: "Vite + Shadcn App",
+    items: [
+      {
+        filename: "package",
+        fileExtension: "json",
+        content: `{\n  "name": "vite-shadcn-app",\n  "version": "1.0.0",\n  "type": "module",\n  "scripts": {\n    "dev": "vite",\n    "build": "vite build"\n  },\n  "dependencies": {\n    "react": "^18.2.0",\n    "react-dom": "^18.2.0"\n  },\n  "devDependencies": {\n    "vite": "^5.0.0"\n  }\n}`,
+      },
+    ],
+  },
+  STATIC: {
+    folderName: "Static Web App",
+    items: [
+      {
+        filename: "package",
+        fileExtension: "json",
+        content: `{\n  "name": "static-app",\n  "version": "1.0.0",\n  "scripts": {\n    "start": "serve .",\n    "dev": "serve ."\n  },\n  "devDependencies": {\n    "serve": "^14.0.0"\n  }\n}`,
+      },
+      {
+        filename: "index",
+        fileExtension: "html",
+        content: `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>Static Page</title>\n  <link rel="stylesheet" href="styles.css">\n</head>\n<body>\n  <h1>Hello from Static HTML!</h1>\n  <script src="script.js"></script>\n</body>\n</html>`,
+      },
+      {
+        filename: "styles",
+        fileExtension: "css",
+        content: `body {\n  font-family: sans-serif;\n  background: #f0f0f0;\n  padding: 20px;\n}`,
+      },
+      {
+        filename: "script",
+        fileExtension: "js",
+        content: `console.log("Static script loaded!");`,
+      },
+    ],
+  },
+  TYPESCRIPT: {
+    folderName: "TypeScript App",
+    items: [
+      {
+        filename: "package",
+        fileExtension: "json",
+        content: `{\n  "name": "typescript-app",\n  "version": "1.0.0",\n  "scripts": {\n    "dev": "vite",\n    "build": "tsc && vite build"\n  },\n  "devDependencies": {\n    "typescript": "^5.0.0",\n    "vite": "^5.0.0"\n  }\n}`,
+      },
+      {
+        filename: "index",
+        fileExtension: "html",
+        content: `<!DOCTYPE html>\n<html>\n<head>\n  <title>TypeScript Playground</title>\n</head>\n<body>\n  <div id="app"></div>\n  <script type="module" src="/index.ts"></script>\n</body>\n</html>`,
+      },
+      {
+        filename: "index",
+        fileExtension: "ts",
+        content: `const app = document.getElementById("app");\nif (app) {\n  app.innerHTML = "<h1>Hello from TypeScript!</h1>";\n}`,
+      },
+    ],
+  },
 };
 
 function validateJsonStructure(data: unknown): boolean {

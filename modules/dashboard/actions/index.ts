@@ -72,7 +72,7 @@ export const getAllPlaygroundForUser = async () => {
 
 export const createPlayground = async (data: {
   title: string;
-  template: "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR";
+  template: "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR" | "SVELTEKIT" | "ASTRO" | "VITE_SHADCN" | "STATIC" | "TYPESCRIPT";
   description?: string;
 }) => {
   const user = await currentUser();
@@ -84,7 +84,7 @@ export const createPlayground = async (data: {
       data: {
         title: title,
         description: description,
-        template: template,
+        template: template as any,
         userId: user?.id!,
       },
     });

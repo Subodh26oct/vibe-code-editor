@@ -33,7 +33,7 @@ type TemplateSelectionModalProps = {
   onClose: () => void;
   onSubmit: (data: {
     title: string;
-    template: "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR";
+    template: "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR" | "SVELTEKIT" | "ASTRO" | "VITE_SHADCN" | "STATIC" | "TYPESCRIPT";
     description?: string;
   }) => void;
 };
@@ -133,6 +133,66 @@ const templates: TemplateOption[] = [
     ],
     category: "fullstack",
   },
+  {
+    id: "sveltekit",
+    name: "SvelteKit",
+    description:
+      "SvelteKit is a framework for building web applications of all sizes, with a beautiful development experience",
+    icon: "/svelte.svg",
+    color: "#FF3E00",
+    popularity: 4,
+    tags: ["Svelte", "SSR", "Frontend"],
+    features: ["Svelte Compiler", "File-based routing", "Vite-powered"],
+    category: "frontend",
+  },
+  {
+    id: "astro",
+    name: "Astro",
+    description:
+      "Astro is the web framework for building content-driven websites like blogs, marketing, and e-commerce",
+    icon: "/astro.svg",
+    color: "#FF5D01",
+    popularity: 4,
+    tags: ["Markdown", "Islands", "Fast"],
+    features: ["Component Islands", "Zero JS by default", "Multi-framework support"],
+    category: "frontend",
+  },
+  {
+    id: "vite-shadcn",
+    name: "Vite + Shadcn/ui",
+    description:
+      "React app powered by Vite, pre-configured with TailwindCSS and shadcn/ui components",
+    icon: "/vite.svg",
+    color: "#BD34FE",
+    popularity: 5,
+    tags: ["React", "Vite", "Tailwind", "Shadcn"],
+    features: ["Hot Module Replacement", "Shadcn CLI", "Tailwind Preconfigured"],
+    category: "frontend",
+  },
+  {
+    id: "static",
+    name: "HTML/CSS/JS",
+    description:
+      "Simple, lightweight static website template with plain HTML5, CSS3, and JavaScript",
+    icon: "/html5.svg",
+    color: "#E34F26",
+    popularity: 3,
+    tags: ["Static", "HTML5", "Vanilla JS"],
+    features: ["Zero Build Step", "Vanilla CSS", "Fast Load Time"],
+    category: "frontend",
+  },
+  {
+    id: "typescript",
+    name: "TypeScript",
+    description:
+      "Clean, modern TypeScript starter with zero-config Vite bundling and TS compilation",
+    icon: "/typescript.svg",
+    color: "#3178C6",
+    popularity: 4,
+    tags: ["TypeScript", "Vite", "Vanilla"],
+    features: ["Strict Type Checking", "Modern Bundling", "Fast Development"],
+    category: "frontend",
+  },
 ];
 
 const TemplateSelectionModal = ({
@@ -176,7 +236,7 @@ const TemplateSelectionModal = ({
     if (selectedTemplate) {
       const templateMap: Record<
         string,
-        "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR"
+        "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR" | "SVELTEKIT" | "ASTRO" | "VITE_SHADCN" | "STATIC" | "TYPESCRIPT"
       > = {
         react: "REACT",
         nextjs: "NEXTJS",
@@ -184,6 +244,11 @@ const TemplateSelectionModal = ({
         vue: "VUE",
         hono: "HONO",
         angular: "ANGULAR",
+        sveltekit: "SVELTEKIT",
+        astro: "ASTRO",
+        "vite-shadcn": "VITE_SHADCN",
+        static: "STATIC",
+        typescript: "TYPESCRIPT",
       };
 
       const template = templates.find((t) => t.id === selectedTemplate);

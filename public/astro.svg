@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="astro-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF5D01" />
+      <stop offset="100%" stop-color="#FF00A0" />
+    </linearGradient>
+  </defs>
+  <path fill="url(#astro-gradient)" d="M12 2L2 22h4.5l2.5-5.5h6l2.5 5.5H22L12 2zm1 11h-2l1-3 1 3z" />
+</svg>
