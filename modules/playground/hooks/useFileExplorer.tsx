@@ -5,6 +5,7 @@ import { TemplateFile, TemplateFolder } from "../lib/path-to-json";
 
 import { generateFileId } from "../lib";
 
+
 interface OpenFile extends TemplateFile {
   id: string;
   hasUnsavedChanges: boolean;
