@@ -526,6 +526,7 @@ const MainPlaygroundPage = () => {
                             error={containerError}
                             serverUrl={serverUrl!}
                             forceResetup={false}
+                            playgroundId={id}
                           />
                         </ResizablePanel>
                       </>
