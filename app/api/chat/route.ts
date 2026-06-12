@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
+import { getOllamaModel } from "@/lib/ollama";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -10,9 +11,10 @@ interface ChatMessage {
 interface ChatRequest {
   message: string;
   history: ChatMessage[];
+  model?: string;
 }
 
-async function generateAIResponse(messages: ChatMessage[]): Promise<string> {
+async function generateAIResponse(messages: ChatMessage[], requestedModel?: string): Promise<string> {
   const systemPrompt = `You are a helpful AI coding assistant. You help developers with:
 - Code explanations and debugging
 - Best practices and architecture advice  
@@ -29,18 +31,19 @@ Always provide clear, practical answers. Use proper code formatting when showing
     .join("\n\n");
 
   try {
+    const model = await getOllamaModel(requestedModel);
     const response = await fetch("http://localhost:11434/api/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "codellama:latest",
+        model,
         prompt: prompt,
         stream: false,
         options: {
           temperature: 0.7, // Controls randomness (0-1)
-          max_tokens: 1000, // Maximum response length
+          num_predict: 1000, // Maximum response length
           top_p: 0.9, // controls diversity
         },
       }),
@@ -62,7 +65,7 @@ Always provide clear, practical answers. Use proper code formatting when showing
 export async function POST(req: NextRequest) {
   try {
     const body: ChatRequest = await req.json();
-    const { message, history = [] } = body;
+    const { message, history = [], model } = body;
 
     // Validate input
     if (!message || typeof message !== "string") {
@@ -93,7 +96,7 @@ export async function POST(req: NextRequest) {
 
     //   Generate ai response
 
-    const aiResponse = await generateAIResponse(messages);
+    const aiResponse = await generateAIResponse(messages, model);
 
 
 
