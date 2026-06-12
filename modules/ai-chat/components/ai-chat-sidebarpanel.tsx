@@ -123,7 +123,28 @@ export const AIChatSidePanel: React.FC<AIChatSidePanelProps> = ({
     const [filterType, setFilterType] = useState<string>("all");
     const [autoSave, setAutoSave] = useState(true);
     const [streamResponse, setStreamResponse] = useState(true);
-    const [model, setModel] = useState<string>("gpt-6");
+    const [model, setModel] = useState<string>("codellama");
+    const [availableModels, setAvailableModels] = useState<string[]>([]);
+
+    useEffect(() => {
+        const fetchModels = async () => {
+            try {
+                const res = await fetch("/api/models");
+                if (res.ok) {
+                    const data = await res.json();
+                    const modelsList = data.models || [];
+                    setAvailableModels(modelsList);
+                    if (modelsList.length > 0) {
+                        const defaultM = modelsList.includes("codellama") ? "codellama" : modelsList[0];
+                        setModel(defaultM);
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch Ollama models:", err);
+            }
+        };
+        fetchModels();
+    }, []);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -389,11 +410,13 @@ export const AIChatSidePanel: React.FC<AIChatSidePanelProps> = ({
                                         <select
                                             value={model}
                                             onChange={(e) => setModel(e.target.value)}
-                                            className="bg-zinc-900/60 border border-zinc-800 rounded px-2 py-1 text-zinc-200 focus:outline-none"
+                                            className="bg-zinc-900/60 border border-zinc-800 rounded px-2 py-1 text-zinc-200 focus:outline-none capitalize"
                                         >
-                                            <option value="gpt-6">gpt-6</option>
-                                            <option value="codellama">codellama</option>
-                                            <option value="llama2">llama2</option>
+                                            {availableModels.map((m) => (
+                                                <option key={m} value={m}>
+                                                    {m.replace(/:latest$/, "")}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                     <div className="relative">

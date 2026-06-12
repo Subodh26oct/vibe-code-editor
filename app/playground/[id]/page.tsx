@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import {
   ResizableHandle,
@@ -43,6 +44,7 @@ import {
   Save,
   Settings,
   X,
+  Palette,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, {
@@ -57,6 +59,20 @@ import { toast } from "sonner";
 const MainPlaygroundPage = () => {
   const { id } = useParams<{ id: string }>();
   const [isPreviewVisible, setIsPreviewVisible] = useState(true);
+  const [editorTheme, setEditorTheme] = useState("modern-dark");
+  const [aiLoading, setAiLoading] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("vibe-editor-theme");
+    if (savedTheme) {
+      setEditorTheme(savedTheme);
+    }
+  }, []);
+
+  const handleThemeChange = (themeName: string) => {
+    setEditorTheme(themeName);
+    localStorage.setItem("vibe-editor-theme", themeName);
+  };
 
   const { playgroundData, templateData, isLoading, error, saveTemplateData } =
     usePlayground(id);
@@ -411,8 +427,36 @@ const MainPlaygroundPage = () => {
                 <ToggleAI
                   isEnabled={aiSuggestions.isEnabled}
                   onToggle={aiSuggestions.toggleEnabled}
-                  suggestionLoading={aiSuggestions.isLoading}
+                  suggestionLoading={aiLoading}
                 />
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="sm" variant="outline" className="gap-2">
+                      <Palette className="h-4 w-4 text-muted-foreground" />
+                      <span className="capitalize">{editorTheme.replace("-", " ")}</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuLabel>Select Editor Theme</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => handleThemeChange("modern-dark")}>
+                      Modern Dark
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleThemeChange("dracula")}>
+                      Dracula
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleThemeChange("monokai")}>
+                      Monokai
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleThemeChange("solarized-dark")}>
+                      Solarized Dark
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleThemeChange("github-light")}>
+                      GitHub Light
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -499,18 +543,9 @@ const MainPlaygroundPage = () => {
                         onContentChange={(value) =>
                           activeFileId && updateFileContent(activeFileId, value)
                         }
-                        suggestion={aiSuggestions.suggestion}
-                        suggestionLoading={aiSuggestions.isLoading}
-                        suggestionPosition={aiSuggestions.position}
-                        onAcceptSuggestion={(editor, monaco) =>
-                          aiSuggestions.acceptSuggestion(editor, monaco)
-                        }
-                        onRejectSuggestion={(editor) =>
-                          aiSuggestions.rejectSuggestion(editor)
-                        }
-                        onTriggerSuggestion={(type, editor) =>
-                          aiSuggestions.fetchSuggestion(type, editor)
-                        }
+                        isEnabled={aiSuggestions.isEnabled}
+                        theme={editorTheme}
+                        onLoadingChange={setAiLoading}
                       />
                     </ResizablePanel>
 
