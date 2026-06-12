@@ -14,9 +14,22 @@ import { LogOut, User } from "lucide-react";
 import LogoutButton from "./logout-button";
 import { useCurrentUser } from "../hooks/use-current-user";
 
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
 const UserButton = () => {
 
   const user = useCurrentUser()
+
+  if (!user) {
+    return (
+      <Link href="/auth/sign-in">
+        <Button size="sm" className="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white border-0 h-9 px-4 rounded-xl font-medium shadow-md shadow-rose-900/10">
+          Sign In
+        </Button>
+      </Link>
+    );
+  }
 
   return (
     <DropdownMenu>
