@@ -67,9 +67,6 @@ Open `http://localhost:3000` to launch the IDE!
 
 ## 📸 Interface Gallery
 
-<details>
-<summary>🔍 Click to expand visual showcase</summary>
-
 ### 🤖 AI Assistance & Multi-Model Diagnostics
 ![AI Assistance](public/screenshots/ai-assistant.png)
 *Offline local AI assistant with specialized tasks (Review, Fix, Optimize, Chat).*
@@ -89,8 +86,6 @@ Open `http://localhost:3000` to launch the IDE!
 ### 🐚 Container Terminal & xterm.js Shell
 ![Terminal Logs](public/screenshots/container-terminal.png)
 *Responsive command terminal running isolated client-side npm/node scripts in WebContainer runtime.*
-
-</details>
 
 ---
 
