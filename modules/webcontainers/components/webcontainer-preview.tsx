@@ -494,8 +494,7 @@ const WebContainerPreview = ({
               src={previewUrl}
               className="w-full h-full border-none"
               title="WebContainer Preview"
-              // @ts-ignore - Enable loading iframe contents under Cross-Origin Isolation (COEP)
-              credentialless=""
+              allow="cross-origin-isolated"
             />
           </div>
 

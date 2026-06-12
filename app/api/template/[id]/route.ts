@@ -106,7 +106,7 @@ const DEFAULT_TEMPLATES = {
       {
         filename: "index",
         fileExtension: "ts",
-        content: `import { Hono } from 'hono';\nimport { serve } from '@hono/node-server';\n\nconst app = new Hono();\n\napp.get('/', (c) => {\n  return c.text('Hello from Hono!');\n});\n\nserve({\n  fetch: app.fetch,\n  port: 3000\n});\n\nexport default app;`,
+        content: `import { Hono } from 'hono';\nimport { serve } from '@hono/node-server';\n\nconst app = new Hono();\n\napp.get('/', (c) => {\n  return c.text('Hello from Hono!');\n});\n\nserve({\n  fetch: app.fetch,\n  port: 3000\n}, (info) => {\n  console.log(\`Server is running on http://localhost:\${info.port}\`);\n});\n\nexport default app;`,
       },
     ],
   },

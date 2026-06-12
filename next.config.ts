@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
         // Apply COOP/COEP to all routes EXCEPT auth API routes
         // These headers are required for WebContainers (SharedArrayBuffer)
         // but break OAuth redirect flows from Google/GitHub
-        source: '/:path((?!api/auth).*)',
+        source: '/((?!api/auth).*)',
         headers: [
           {
             key: 'Cross-Origin-Opener-Policy',
@@ -29,7 +29,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Cross-Origin-Embedder-Policy',
-            value: 'credentialless',
+            value: 'require-corp',
           },
         ],
       },
