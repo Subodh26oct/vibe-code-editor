@@ -32,6 +32,8 @@
 
 ## 🚀 Key Technical Accomplishments
 
+| Feature / Accomplishment | Action (X - What was done) | Measurement (Y - ATS Quantification) | Implementation (Z - Technical execution) | Recruiter Weightage / Impact |
+| :--- | :--- | :--- | :--- | :--- |
 | **In-Browser Containerized Runtimes** | Engineered client-side WebAssembly sandboxes to run isolated Node.js application scripts | Achieved **0ms** server cold-start latency, cut cloud computing costs by **100%**, and improved feedback loop speed by **35%** | Integrated WebContainers API with SharedArrayBuffer memory allocation | ⭐⭐⭐⭐⭐ **High** (Eliminates backend hosting dependencies and network-related latency bottlenecks) |
 | **Offline AI Autocomplete Engine** | Developed localized FIM (Fill-in-the-Middle) code prediction and inline autocomplete flows | Reduced autocomplete suggestion latency to **<150ms** with **98.2%** suggestion availability | Integrated Monacopilot autocomplete client bound directly to local Ollama LLMs | ⭐⭐⭐⭐☆ **Medium-High** (Guarantees zero-network data leakage and runs completely offline) |
 | **Multi-Model Dialog Diagnostics** | Orchestrated dynamic multi-model diagnostics, debugging, and code refactoring modules | Resolved coding defects with **85%** accuracy and shortened debug-refactor loops by **40%** | Built custom model discovery and selection router API linked to local LLM registries | ⭐⭐⭐⭐⭐ **High** (Dramatically accelerates developer velocity and developer QA cycles) |
