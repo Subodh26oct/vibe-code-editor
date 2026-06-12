@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const response = await fetch("http://localhost:11434/api/tags", {
+    const ollamaUrl = process.env.OLLAMA_URL || "http://localhost:11434";
+    const response = await fetch(`${ollamaUrl}/api/tags`, {
       method: "GET",
       // Short timeout in case Ollama is not running
       signal: AbortSignal.timeout(2000),

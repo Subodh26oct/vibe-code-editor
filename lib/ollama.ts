@@ -30,7 +30,8 @@ export async function getOllamaModel(requestedModel?: string): Promise<string> {
   const defaultModel = requestedModel || process.env.OLLAMA_MODEL || "codellama:latest";
 
   try {
-    const response = await fetch("http://localhost:11434/api/tags", {
+    const ollamaUrl = process.env.OLLAMA_URL || "http://localhost:11434";
+    const response = await fetch(`${ollamaUrl}/api/tags`, {
       method: "GET",
       // Set a short timeout so we don't hang the API response if Ollama is not running
       signal: AbortSignal.timeout(2000),

@@ -32,7 +32,8 @@ Always provide clear, practical answers. Use proper code formatting when showing
 
   try {
     const model = await getOllamaModel(requestedModel);
-    const response = await fetch("http://localhost:11434/api/generate", {
+    const ollamaUrl = process.env.OLLAMA_URL || "http://localhost:11434";
+    const response = await fetch(`${ollamaUrl}/api/generate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
