@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@prisma/client", "prisma"],
+  outputFileTracingIncludes: {
+    "/api/template/[id]": ["./vibecode-starters/**/*"],
+  },
   images:{
     remotePatterns:[
       {

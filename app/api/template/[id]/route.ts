@@ -19,6 +19,11 @@ const DEFAULT_TEMPLATES = {
         content: `{\n  "name": "react-app",\n  "version": "1.0.0",\n  "type": "module",\n  "scripts": {\n    "dev": "vite",\n    "start": "vite",\n    "build": "vite build",\n    "preview": "vite preview"\n  },\n  "dependencies": {\n    "react": "^18.2.0",\n    "react-dom": "^18.2.0"\n  },\n  "devDependencies": {\n    "@types/react": "^18.2.0",\n    "@types/react-dom": "^18.2.0",\n    "@vitejs/plugin-react": "^4.0.0",\n    "vite": "^4.3.0"\n  }\n}`,
       },
       {
+        filename: "index",
+        fileExtension: "html",
+        content: `<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="UTF-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n    <title>React App</title>\n  </head>\n  <body>\n    <div id="root"></div>\n    <script type="module" src="/main.tsx"></script>\n  </body>\n</html>`,
+      },
+      {
         filename: "App",
         fileExtension: "tsx",
         content: `import React from 'react';\n\nfunction App() {\n  return (\n    <div className="App">\n      <h1>Welcome to React</h1>\n    </div>\n  );\n}\n\nexport default App;`,
@@ -74,6 +79,16 @@ const DEFAULT_TEMPLATES = {
         content: `{\n  "name": "vue-app",\n  "version": "1.0.0",\n  "type": "module",\n  "scripts": {\n    "dev": "vite",\n    "start": "vite",\n    "build": "vite build"\n  },\n  "dependencies": {\n    "vue": "^3.3.0"\n  },\n  "devDependencies": {\n    "@vitejs/plugin-vue": "^4.2.0",\n    "vite": "^4.3.0"\n  }\n}`,
       },
       {
+        filename: "index",
+        fileExtension: "html",
+        content: `<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="UTF-8" />\n    <title>Vue App</title>\n  </head>\n  <body>\n    <div id="app"></div>\n    <script type="module" src="/main.js"></script>\n  </body>\n</html>`,
+      },
+      {
+        filename: "main",
+        fileExtension: "js",
+        content: `import { createApp } from 'vue';\nimport App from './App.vue';\n\ncreateApp(App).mount('#app');`,
+      },
+      {
         filename: "App",
         fileExtension: "vue",
         content: `<template>\n  <div id="app">\n    <h1>Welcome to Vue</h1>\n  </div>\n</template>\n\n<script>\nexport default {\n  name: 'App',\n};\n</script>\n\n<style scoped>\n</style>`,
@@ -86,12 +101,12 @@ const DEFAULT_TEMPLATES = {
       {
         filename: "package",
         fileExtension: "json",
-        content: `{\n  "name": "hono-app",\n  "version": "1.0.0",\n  "type": "module",\n  "scripts": {\n    "start": "wrangler pages dev .",\n    "dev": "wrangler pages dev ."\n  },\n  "dependencies": {\n    "hono": "^3.0.0"\n  },\n  "devDependencies": {\n    "wrangler": "^3.0.0"\n  }\n}`,
+        content: `{\n  "name": "hono-app",\n  "version": "1.0.0",\n  "type": "module",\n  "scripts": {\n    "dev": "tsx watch index.ts",\n    "start": "tsx watch index.ts"\n  },\n  "dependencies": {\n    "@hono/node-server": "^1.13.8",\n    "hono": "^4.7.4"\n  },\n  "devDependencies": {\n    "@types/node": "^22.13.9",\n    "tsx": "^4.19.3"\n  }\n}`,
       },
       {
         filename: "index",
         fileExtension: "ts",
-        content: `import { Hono } from 'hono';\n\nconst app = new Hono();\n\napp.get('/', (c) => {\n  return c.text('Hello from Hono!');\n});\n\nexport default app;`,
+        content: `import { Hono } from 'hono';\nimport { serve } from '@hono/node-server';\n\nconst app = new Hono();\n\napp.get('/', (c) => {\n  return c.text('Hello from Hono!');\n});\n\nserve({\n  fetch: app.fetch,\n  port: 3000\n});\n\nexport default app;`,
       },
     ],
   },
