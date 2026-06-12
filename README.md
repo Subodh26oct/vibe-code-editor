@@ -2,7 +2,7 @@
 
 **VibeCode Editor** is a next-generation, browser-based integrated development environment (IDE) built using **Next.js**, **WebContainers**, **Monaco Editor**, and **local LLMs via Ollama**. It provides zero-latency code execution and offline AI code completions in a highly optimized developer workspace.
 
-![VibeCode Editor Workspace](public/screenshots/screenshot-1781250010914.png)
+![VibeCode Editor Workspace](public/screenshots/workspace-ide.png)
 
 ---
 
@@ -71,23 +71,23 @@ Open `http://localhost:3000` to launch the IDE!
 <summary>🔍 Click to expand visual showcase</summary>
 
 ### 🤖 AI Assistance & Multi-Model Diagnostics
-![AI Assistance](public/screenshots/screenshot-1781249420799.png)
+![AI Assistance](public/screenshots/ai-assistant.png)
 *Offline local AI assistant with specialized tasks (Review, Fix, Optimize, Chat).*
 
 ### 📊 Personal Projects Dashboard
-![Projects Dashboard](public/screenshots/screenshot-1781250025306.png)
+![Projects Dashboard](public/screenshots/projects-dashboard.png)
 *Personal workspace dashboard for organizing and starting new template-driven playground instances.*
 
 ### 🎨 Theme Customization & Editor Styling
-![Theme Customization](public/screenshots/screenshot-1781249471104.png)
+![Theme Customization](public/screenshots/theme-customization.png)
 *Dedicated project toolbar theme and font controls supporting Dracula, Monokai, and custom styles.*
 
 ### 🖥️ In-Browser App Preview & Localhost
-![App Preview](public/screenshots/Screenshot_12-6-2026_131041_localhost.jpeg)
+![App Preview](public/screenshots/in-browser-app-preview.jpeg)
 *Interactive workspace running a hot-reloaded development server with browser frame integration.*
 
 ### 🐚 Container Terminal & xterm.js Shell
-![Terminal Logs](public/screenshots/screenshot-1781251476820.png)
+![Terminal Logs](public/screenshots/container-terminal.png)
 *Responsive command terminal running isolated client-side npm/node scripts in WebContainer runtime.*
 
 </details>
