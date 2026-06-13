@@ -41,17 +41,32 @@ const DEFAULT_TEMPLATES = {
       {
         filename: "package",
         fileExtension: "json",
-        content: `{\n  "name": "nextjs-app",\n  "version": "1.0.0",\n  "scripts": {\n    "dev": "next dev",\n    "start": "next start",\n    "build": "next build"\n  },\n  "dependencies": {\n    "react": "^18.2.0",\n    "react-dom": "^18.2.0",\n    "next": "^14.0.0"\n  }\n}`,
+        content: `{\n  "name": "nextjs",\n  "version": "0.1.0",\n  "private": true,\n  "scripts": {\n    "dev": "next dev",\n    "build": "next build",\n    "start": "next start",\n    "lint": "next lint"\n  },\n  "dependencies": {\n    "@types/node": "20.6.2",\n    "@types/react": "18.2.22",\n    "@types/react-dom": "18.2.7",\n    "autoprefixer": "10.4.15",\n    "eslint": "8.49.0",\n    "eslint-config-next": "13.5.1",\n    "next": "13.5.1",\n    "postcss": "8.4.30",\n    "react": "18.2.0",\n    "react-dom": "18.2.0",\n    "tailwindcss": "3.3.3",\n    "typescript": "5.2.2"\n  }\n}`,
       },
       {
-        filename: "page",
-        fileExtension: "tsx",
-        content: `export default function Home() {\n  return (\n    <main>\n      <h1>Welcome to Next.js</h1>\n    </main>\n  );\n}`,
+        filename: "next.config",
+        fileExtension: "js",
+        content: `/** @type {import('next').NextConfig} */\nconst nextConfig = {}\n\nmodule.exports = nextConfig`,
       },
       {
-        filename: "layout",
-        fileExtension: "tsx",
-        content: `export const metadata = {\n  title: 'Next.js App',\n};\n\nexport default function RootLayout({\n  children,\n}: {\n  children: React.ReactNode;\n}) {\n  return (\n    <html lang="en">\n      <body>{children}</body>\n    </html>\n  );\n}`,
+        filename: "tsconfig",
+        fileExtension: "json",
+        content: `{\n  "compilerOptions": {\n    "target": "es5",\n    "lib": ["dom", "dom.iterable", "esnext"],\n    "allowJs": true,\n    "skipLibCheck": true,\n    "strict": true,\n    "noEmit": true,\n    "esModuleInterop": true,\n    "module": "esnext",\n    "moduleResolution": "bundler",\n    "resolveJsonModule": true,\n    "isolatedModules": true,\n    "jsx": "preserve",\n    "incremental": true,\n    "plugins": [{ "name": "next" }],\n    "paths": { "@/*": ["./*"] }\n  },\n  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],\n  "exclude": ["node_modules"]\n}`,
+      },
+      {
+        folderName: "app",
+        items: [
+          {
+            filename: "page",
+            fileExtension: "tsx",
+            content: `export default function Home() {\n  return (\n    <main>\n      <h1>Welcome to Next.js</h1>\n    </main>\n  );\n}`,
+          },
+          {
+            filename: "layout",
+            fileExtension: "tsx",
+            content: `export const metadata = {\n  title: 'Next.js App',\n};\n\nexport default function RootLayout({\n  children,\n}: {\n  children: React.ReactNode;\n}) {\n  return (\n    <html lang="en">\n      <body>{children}</body>\n    </html>\n  );\n}`,
+          },
+        ],
       },
     ],
   },
